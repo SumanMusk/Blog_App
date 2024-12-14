@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <%- include('./partials/cssCDN', { innerRoute: false }) %>
+</head>
+
+<body>
+    <%- include('./partials/navbar') %>
+        <div class="container mt-5">
+            <div class="d-flex justify-content-center row row-cols-3 gap-5">
+                <% if(allData.length === 0) { %>
+                    <div style="color: blueviolet;">Noone haven't created any vlogs</div>
+                <% } else { %>
+                    <% allData.forEach(data=> { %>
+                        <div class="card mt-2" style="width: 18rem;">
+                            <% if(data.coverImage !== "") { %>
+                                <img src="<%= data.coverImage %>" class="card-img-top" alt="Unable to load image due to some server issue">
+                            <% } %>
+                            <div class="card-body">
+                                <h4 class="card-title"><%= data.title %></h4>
+                                <h5 class="card-title">Made By: <%= data.createdBy.name %></h5>
+                                <% if(data.description.length > 20) { %>
+                                    <p class="card-text"> <%= data.description.substring(0, 19) %>... </p>
+                                <% } else { %>
+                                    <p class="card-text"> <%= data.description %> </p>
+                                <% } %>
+                                <form action="/blogs/<%= data._id %>">
+                                    <button class="btn btn-primary">Full Blog</button>
+                                </form>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+</body>
+<%- include('./partials/scriptCDN') %>
+</html>

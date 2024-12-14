@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= user.name %></title>
+    <%- include("./partials/cssCDN", { innerRoute: true }) %>
+</head>
+<body>
+    <%- include("./partials/navbar") %>
+    <div class="container mt-5 text-white">
+        <div class="d-flex">
+            <img src="<%= user.pfpImage %>" style="width: 30%; height: 30%; border-radius: 50%;" alt="Unable to load profile picture">
+            <div class="d-flex flex-column gap-2 mt-3" style="margin-left: 5%; width: 100%;">
+                <h1 style="margin-left: 5%;"> <%= user.name %> </h1>
+                <div class="d-flex gap-2" style="margin-left: 5%;">
+                    <i class="fa fa-envelope-o" style="font-size:24px"></i>
+                    <div> <%= user.email %> </div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 100%;">
+            <% if(user_blogs.length !== 0) { %>
+                <label class="mt-4"> Blogs created by <span style="color: aqua; font-size: large;"><%= user.name %></span>: </label>
+            <% } %>
+            <div class="my-4 d-flex justify-content-center row row-cols-3 gap-5">
+                <% if(user_blogs.length === 0) { %>
+                    <h2 style="color: blueviolet;">No Blogs Created!</h2>
+                <% } else { %>
+                    <% user_blogs.forEach(blog=> { %>
+                        <div class="card mt-2" style="width: 18rem;">
+                            <% if(blog.coverImage !== "") { %>
+                                <img src="../<%= blog.coverImage %>" class="card-img-top" alt="Unable to load image due to some server issue">
+                            <% } %>
+                            <div class="card-body">
+                                <h4 class="card-title"><%= blog.title %></h4>
+                                <% if(blog.description.length > 20) { %>
+                                    <p class="card-text"> <%= blog.description.substring(0, 19) %>... </p>
+                                <% } else { %>
+                                    <p class="card-text"> <%= blog.description %> </p>
+                                <% } %>
+                                <form action="/blogs/<%= blog._id %>">
+                                    <button class="btn btn-primary">Full Blog</button>
+                                </form>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <%- include("./partials/scriptCDN") %>
+</body>
+</html>

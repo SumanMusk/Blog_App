@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <%- include('./partials/cssCDN', { innerRoute: false }) %>
+</head>
+<body>
+    <%- include('./partials/navbar') %>
+    <div class="container mt-3 text-white">
+        <form action="/login" method="post"> 
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Enter Email: </label>
+                <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password:</label>
+                <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <input type="hidden" name="dynamic_redirect_url" value="<%= dynamic_redirect_url %>">
+            <button type="submit" id="submit" class="btn btn-primary">Submit</button>
+            <button class="btn btn-warning">
+                <a href="/" class="text-white" style="width: 100%; text-decoration: none;">Back</a>
+            </button>
+        </form>
+        <% if(!errMsz) { %>         
+            <div id="errDiv" class="mt-3 alert alert-danger" role="alert"> Incorrect Email or Password! </div>
+        <% } %>
+    </div>
+</body>
+<%- include('./partials/scriptCDN') %>
+<script>
+    const errMsz = <%= errMsz %>;
+    
+    if(!errMsz) {
+        const errDiv = document.getElementById("errDiv");
+        setTimeout(() => {
+            errDiv.style.display = "none";
+        }, 2000);
+    }
+</script>
+</html>

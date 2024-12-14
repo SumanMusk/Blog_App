@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <%- include("../partials/cssCDN", { innerRoute: true }) %>
+</head>
+<body>
+    <%- include("../partials/navbar") %>
+    <div class="container mt-4 text-white">
+        <div class="d-flex gap-1 container" style="height: 21rem;">
+            <h3 style="padding: 50px;">
+                <%= data.title %>
+            </h3>
+            <h5 style="padding-top: 8%;">
+                <span>-by </span>
+                <span style="color: yellow;"><%= data.createdBy.name %></span>
+            </h5>
+            <img src="../<%= data.coverImage %>" class="img-fluid" style="margin-left: auto;">
+        </div>
+        <div class="mt-4"> <%= data.description %> </div>
+        <% if (allComments.length === 0) { %>
+            <div class="m-3 fs-3"> Comments</div>
+        <% } else { %>
+            <div class="m-3 fs-3"> Comments ( <%= allComments.length %> )</div>
+        <% } %>
+        <form class="d-flex gap-3 px-5 mt-4 mb-5" action="/blogs/<%= data._id %>" method="post">
+            <input type="text" name="comment" class="form-control" id="exampleInputPassword1" placeholder="Share your thoughts about this blog">
+            <button class="btn btn-primary" style="width: 16%;">Add Comment</button>
+        </form>
+        <% if(locals.errMsz) { %>
+            <div id="errDiv" class="mx-5 alert alert-danger" style="width: 91.5%;" role="alert"> <%= errMsz %> </div>
+        <% } %>        
+        <% if (allComments.length === 0) { %>
+            <div class="my-3 d-flex justify-content-center fs-3">
+                <div>No comments yet!</div>
+            </div>
+        <% } %>
+        <% allComments.forEach(comment => { %>
+            <div class="container my-2 rounded" style="margin-left: 6%; width: 87%; transition: background-color 0.3s;" onmouseover="this.style.backgroundColor = '#626262'" onmouseout="this.style.backgroundColor = '#3c3c3c'">
+                <div class="d-flex gap-3 p-2">
+                    <img src="<%= comment.createdBy.pfpImage %>" style="border-radius: 50%; width: 50px;">
+                    <div style="display: flex; flex-direction: column;">
+                        <label style="color: #f5841f;">@<%= comment.createdBy.name %></label>
+                        <label> <%= comment.comment %> </label>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+    <%- include("../partials/scriptCDN") %>
+    <script>
+        <% if(locals.errMsz) { %>
+            const errDiv = document.getElementById("errDiv");
+            setTimeout(() => {
+                errDiv.style.display = "none";
+            }, 2000);
+        <% } %>
+    </script>
+</body>
+</html>
